@@ -12,11 +12,11 @@ module.exports = (wintersmith, callback) ->
 
 		getView: ->
 			return (args..., callback) ->
-				coffee.compile @_text, (err, data) ->
-					if err 
-						callback err
-					else 
-						callback null, new Buffer data
+				try
+					data = coffee.compile @_text
+					callback null, new Buffer data
+				catch err
+					callback err
 
 		CoffeePlugin.fromFile = (filename, callback) ->
 			fs.readFile filename.full, (err, buffer) ->

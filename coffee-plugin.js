@@ -26,16 +26,16 @@
 
       CoffeePlugin.prototype.getView = function() {
         return function() {
-          var args, callback, _i;
+          var args, callback, data, err, _i;
 
           args = 2 <= arguments.length ? __slice.call(arguments, 0, _i = arguments.length - 1) : (_i = 0, []), callback = arguments[_i++];
-          return coffee.compile(this._text, function(err, data) {
-            if (err) {
-              return callback(err);
-            } else {
-              return callback(null, new Buffer(data));
-            }
-          });
+          try {
+            data = coffee.compile(this._text);
+            return callback(null, new Buffer(data));
+          } catch (_error) {
+            err = _error;
+            return callback(err);
+          }
         };
       };
 
